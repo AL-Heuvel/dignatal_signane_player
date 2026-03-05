@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Artist Program</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-body: #05010a;
+            --card-bg: rgba(45, 10, 60, 0.6);
+            --text-main: #f3e8ff;
+            --text-muted: #e9d5ff;
+            --accent: #4b3cd5;
+            --accent-glow: rgba(217, 70, 239, 0.15);
+        }
+
+        body { 
+            background: radial-gradient(circle at center, #4a28a9 0%, #000000 100%);
+            color: var(--text-main);
+            font-family: 'Montserrat', sans-serif; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            height: 100vh; 
+            margin: 0;
+            overflow: hidden;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1000px;
+            height: 80vh;
+            background: rgba(20, 20, 20, 0.6);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(230, 126, 34, 0.2);
+            border-radius: 32px;
+            padding: 3rem;
+            box-shadow: 
+                0 25px 50px -12px rgba(0, 0, 0, 0.8),
+                0 0 10px var(--accent-glow);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .header {
+            margin-bottom: 2rem;
+            border-bottom: 2px solid var(--accent);
+            padding-bottom: 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            flex-shrink: 0;
+        }
+
+        .header h1 {
+            margin: 0;
+            font-size: 3rem;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            text-shadow: 0 0 5px var(--accent-glow);
+        }
+
+        .header .sub {
+            color: var(--accent);
+            font-weight: 600;
+            font-size: 1.2rem;
+            text-transform: uppercase;
+        }
+
+        .timetable {
+            flex-grow: 1;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            grid-template-rows: repeat(7, 1fr);
+            gap: 1rem;
+            grid-auto-flow: column;
+            overflow: visible; 
+            height: 100%;
+        }
+
+        .slot {
+            display: grid;
+            grid-template-columns: 70px 1fr 100px;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.05);
+            padding: 0.75rem 1rem;
+            border-radius: 12px;
+            border-left: 4px solid transparent;
+            transition: all 0.3s;
+            height: auto;
+        }
+
+        .slot:hover, .slot.active-highlight {
+            border-left: 4px solid var(--accent);
+            background: rgba(255, 255, 255, 0.1);
+            transform: scale(1.02);
+        }
+
+        .time {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--accent);
+        }
+
+        .details {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 0 1rem;
+            overflow: hidden; 
+        }
+
+        .artist {
+            font-size: 1.3rem;
+            font-weight: 700;
+            line-height: 1.2;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .location {
+            color: var(--text-muted);
+            font-size: 0.8rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-top: 0.1rem;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .status {
+            text-align: right;
+            font-weight: 600;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            font-size: 0.75rem;
+            letter-spacing: 0.5px;
+        }
+
+        .slot.live .status {
+            color: #e74c3c;
+            animation: blink 2s infinite;
+        }
+        
+        .slot.live .time {
+            color: #e74c3c;
+        }
+
+        @keyframes blink {
+            0% { opacity: 1; }
+            50% { opacity: 0.5; }
+            100% { opacity: 1; }
+        }
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Programma</h1>
+            <span class="sub" id="current-day">Vandaag</span>
+        </div>
+        
+        <div class="timetable" id="timetable">
+        </div>
+    </div>
+    <script>
+        const now = new Date();
+        const options = { weekday: 'long', day: 'numeric', month: 'long'};
+        document.getElementById('current-day').innerText = now.toLocaleDateString('nl-NL', options);
+
+        const schedule = [
+            { time: "12:00", artist: "Local Talent Showcase", location: "Turbine Hall" },
+            { time: "13:00", artist: "Jazz Cafe", location: "Foyer" },
+            { time: "14:00", artist: "Suzan & Freek", location: "Main Stage" },
+            { time: "15:00", artist: "Snelle", location: "Club Stage" },
+            { time: "16:00", artist: "De Jeugd van Tegenwoordig", location: "Main Stage" },
+            { time: "17:00", artist: "Goldband", location: "Turbine Hall" },
+            { time: "18:00", artist: "Chef'Special", location: "Main Stage" },
+            { time: "19:00", artist: "Davina Michelle", location: "Club Stage" },
+            { time: "20:00", artist: "Bruno Mars", location: "Main Stage" },
+            { time: "21:30", artist: "Taylor Swift", location: "Main Stage" },
+            { time: "23:00", artist: "Martin Garrix", location: "Club Stage" },
+            { time: "00:30", artist: "Armin van Buuren", location: "Turbine Hall" },
+            { time: "02:00", artist: "Closing Party", location: "Foyer" }
+        ];
+
+        const timetableEl = document.getElementById('timetable');
+
+        function getMinutes(timeStr) {
+            const [hours, minutes] = timeStr.split(':').map(Number);
+            if (hours < 5) return (hours + 24) * 60 + minutes;
+            return hours * 60 + minutes;
+        }
+
+        function renderSchedule() {
+            const current = new Date();
+            let currentMinutes = current.getHours() * 60 + current.getMinutes();
+            if (current.getHours() < 5) currentMinutes += 24 * 60;
+
+            timetableEl.innerHTML = '';
+            
+            let foundLive = false;
+
+            schedule.forEach((slot, index) => {
+                const slotStart = getMinutes(slot.time);
+                const nextSlot = schedule[index + 1];
+                const slotEnd = nextSlot ? getMinutes(nextSlot.time) : slotStart + 60; 
+
+                let isLive = false;
+                let statusText = slot.time;
+                let statusClass = "time";
+
+                if (currentMinutes >= slotStart && currentMinutes < slotEnd) {
+                    isLive = true;
+                    foundLive = true;
+                }
+
+                let slotHtml = `
+                    <div class="slot ${isLive ? 'live active-highlight' : ''}" id="${isLive ? 'live-slot' : ''}">
+                        <div class="${isLive ? 'time' : 'time'}">${slot.time}</div>
+                        <div class="details">
+                            <div class="artist">${slot.artist}</div>
+                            <div class="location">${slot.location}</div>
+                        </div>
+                        <div class="status">${isLive ? '● LIVE' : (currentMinutes > slotEnd ? 'Afgelopen' : 'Next')}</div>
+                    </div>
+                `;
+                timetableEl.innerHTML += slotHtml;
+            });
+        }
+
+        renderSchedule();
+        setInterval(renderSchedule, 60000);
+
+    </script>
+</body>
+</html>

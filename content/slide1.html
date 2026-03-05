@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <title>De Turbine Welkom</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&display=swap');
+
+        body {
+            background-color: #1a1a1a;
+            color: white;
+            font-family: 'Montserrat', sans-serif;
+            margin: 0;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            background: radial-gradient(circle at center, #2c3e50 0%, #000000 100%);
+        }
+
+        .container {
+            text-align: center;
+            position: relative;
+            z-index: 2;
+        }
+
+        .turbine-logo {
+            width: 150px;
+            height: 150px;
+            border: 10px solid #e67e22;
+            border-radius: 50%;
+            margin: 0 auto 2rem;
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: rgba(0,0,0,0.5);
+            box-shadow: 0 0 30px rgba(230, 126, 34, 0.3);
+        }
+
+        .blade-container {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            animation: spin 10s linear infinite;
+        }
+
+        .blade {
+            position: absolute;
+            top: 10%;
+            left: 45%;
+            width: 10%;
+            height: 40%;
+            background: #bdc3c7;
+            border-radius: 50% 50% 0 0;
+            transform-origin: 50% 100%;
+        }
+
+        .blade:nth-child(1) { transform: rotate(0deg) translateY(0); }
+        .blade:nth-child(2) { transform: rotate(120deg) translateY(0); }
+        .blade:nth-child(3) { transform: rotate(240deg) translateY(0); }
+
+        .title {
+            font-size: 5rem;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 5px;
+            margin: 0;
+            color: #ecf0f1;
+            text-shadow: 2px 2px 0px #e67e22;
+            opacity: 0;
+            animation: slideUp 1s ease-out forwards 0.5s;
+        }
+
+        .subtitle {
+            font-size: 1.5rem;
+            font-weight: 400;
+            letter-spacing: 2px;
+            color: #d35400;
+            margin-top: 1rem;
+            opacity: 0;
+            animation: fadeIn 1.5s ease-out forwards 1.5s;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        @keyframes slideUp {
+            from { transform: translateY(50px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        /* Background animated particles/dust */
+        .particles {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            z-index: 1;
+            pointer-events: none;
+            background-image: 
+                radial-gradient(#ecf0f1 1px, transparent 1px),
+                radial-gradient(#ecf0f1 1px, transparent 1px);
+            background-size: 50px 50px;
+            background-position: 0 0, 25px 25px;
+            opacity: 0.1;
+            animation: moveBackground 20s linear infinite;
+        }
+
+        @keyframes moveBackground {
+            from { background-position: 0 0, 25px 25px; }
+            to { background-position: 100px 100px, 125px 125px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="particles"></div>
+    <div class="container">
+        <div class="turbine-logo">
+            <div class="blade-container">
+                <div class="blade"></div>
+                <div class="blade"></div>
+                <div class="blade"></div>
+            </div>
+        </div>
+        <h1 class="title">De Turbine</h1>
+        <div class="subtitle">WELKOM BIJ HET EVENEMENT</div>
+    </div>
+</body>
+</html>
